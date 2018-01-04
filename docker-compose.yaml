@@ -1,0 +1,23 @@
+version: "3"
+
+services:
+
+  prometheus:
+    image: prom/prometheus:latest
+    ports:
+    - 9090:9090
+    volumes:
+    - "./prometheus.yml:/etc/prometheus/prometheus.yml"
+    links:
+    - sumo-client
+
+  sumo-client:
+    #image: sumo:0.27
+    build: .
+    environment:
+    - SUMO_ADDRESS=https://api.eu.sumologic.com/api/v1
+    - SUMO_ACCESS_ID=$(SUMO_ACCESS_ID)
+    - SUMO_ACCESS_KEY=$(SUMO_ACCESS_KEY)
+    - APP_PORT=8001
+    ports:
+    - 8001:8001
